@@ -1,5 +1,5 @@
 name: passbook_app
-description: Passbook Finance App Fixed
+description: Passbook Finance App Fixed v2
 publish_to: "none"
 
 version: 1.0.0+1
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.2.2
-  file_picker: ^6.1.1
+  file_picker: ^8.0.0
   path_provider: ^2.1.2
 
 flutter:
