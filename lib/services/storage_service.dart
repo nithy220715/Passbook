@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/transaction.dart';
@@ -9,8 +10,8 @@ class StorageService {
     final p = await SharedPreferences.getInstance();
     final data = p.getString(key);
     if (data == null) return [];
-    List list = jsonDecode(data);
-    return list.map((e)=>TransactionModel.fromJson(e)).toList();
+    return (jsonDecode(data) as List)
+        .map((e)=>TransactionModel.fromJson(e)).toList();
   }
 
   static Future<void> save(List<TransactionModel> txs) async {
