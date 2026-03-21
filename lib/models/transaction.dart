@@ -5,18 +5,4 @@ class TransactionModel {
   String note;
 
   TransactionModel({required this.date, required this.amount, required this.note});
-
-  Map<String, dynamic> toJson() => {
-    'date': date,
-    'amount': amount,
-    'note': note,
-  };
-
-  factory TransactionModel.fromJson(Map<String, dynamic> json) {
-    return TransactionModel(
-      date: json['date'],
-      amount: json['amount'],
-      note: json['note'],
-    );
-  }
 }
