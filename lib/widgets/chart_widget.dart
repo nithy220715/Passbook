@@ -1,22 +1,20 @@
-import 'package:fl_chart/fl_chart.dart';
+
 import 'package:flutter/material.dart';
-import '../models/transaction.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class ChartWidget extends StatelessWidget {
-  final List<TransactionModel> txs;
-
-  const ChartWidget({super.key, required this.txs});
+  const ChartWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BarChart(
-      BarChartData(
-        barGroups: [
-          BarChartGroupData(x: 0, barRods: [
-            BarChartRodData(toY: txs.length.toDouble())
-          ])
-        ],
-      ),
-    );
+    return LineChart(LineChartData(
+      lineBarsData: [
+        LineChartBarData(spots: [
+          FlSpot(0, 1),
+          FlSpot(1, 3),
+          FlSpot(2, 2),
+        ])
+      ]
+    ));
   }
 }
