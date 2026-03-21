@@ -1,6 +1,5 @@
-
 name: fintech_app
-description: A simple fintech app
+description: Fintech App
 publish_to: "none"
 
 version: 1.0.0+1
@@ -11,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.6
 
 flutter:
   uses-material-design: true
