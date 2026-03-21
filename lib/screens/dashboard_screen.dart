@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
-import '../widgets/summary_card.dart';
-import '../widgets/chart_widget.dart';
+import '../models/transaction.dart';
+import '../services/storage_service.dart';
+import 'settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -12,52 +12,52 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
 
-  String selectedFilter = "All";
+  List<TransactionModel> txs = [];
+
+  load() async {
+    txs = await StorageService.load();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    load();
+  }
+
+  double get income => txs.where((e)=>e.amount>0).fold(0,(a,b)=>a+b.amount);
+  double get expense => txs.where((e)=>e.amount<0).fold(0,(a,b)=>a+b.amount.abs());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Premium Fintech")),
+      appBar: AppBar(
+        title: const Text("Passbook"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: ()=>Navigator.push(context,MaterialPageRoute(builder:(_)=>const SettingsScreen())).then((_)=>load()),
+          )
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-
-            // Filters
-            DropdownButton<String>(
-              value: selectedFilter,
-              items: ["All","Income","Expense"]
-                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                  .toList(),
-              onChanged: (v) => setState(() => selectedFilter = v!),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Summary
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Expanded(child: SummaryCard(title: "Income", value: "₹5000")),
-                SizedBox(width: 10),
-                Expanded(child: SummaryCard(title: "Expense", value: "₹3000")),
-              ],
-            ),
-
-            const SizedBox(height: 20),
-
-            // Chart
-            SizedBox(height: 200, child: ChartWidget()),
-
-            const SizedBox(height: 20),
-
-            // Monthly table placeholder
+            Text("Balance: ₹${income-expense}"),
+            Text("Income: ₹$income"),
+            Text("Expense: ₹$expense"),
             Expanded(
-              child: ListView(
-                children: const [
-                  ListTile(title: Text("Jan"), trailing: Text("₹2000")),
-                  ListTile(title: Text("Feb"), trailing: Text("₹3000")),
-                ],
+              child: ListView.builder(
+                itemCount: txs.length,
+                itemBuilder: (_,i){
+                  var t=txs[i];
+                  return ListTile(
+                    title: Text(t.note),
+                    subtitle: Text(t.date),
+                    trailing: Text("₹${t.amount}"),
+                  );
+                },
               ),
             )
           ],
