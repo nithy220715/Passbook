@@ -10,41 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 📥 Checkout repo
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # ⚙️ Setup Flutter (latest stable)
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
           channel: stable
 
-      # 🔍 Verify environment
-      - name: Flutter Doctor
-        run: flutter doctor -v
+      - run: flutter doctor -v
+      - run: flutter pub get
 
-      # 📦 Install dependencies
-      - name: Get dependencies
-        run: flutter pub get
+      # 🔥 KEY FIX
+      - run: flutter create .
 
-      # 🛠️ Ensure Android exists (safe fallback)
-      - name: Ensure platform
-        run: flutter create .
+      - run: flutter build apk --release
 
-      # 🚀 Build APK
-      - name: Build APK
-        run: flutter build apk --release
-
-      # ✅ Verify APK exists (QA step)
-      - name: Verify APK
-        run: |
-          ls -lh build/app/outputs/flutter-apk/
-          test -f build/app/outputs/flutter-apk/app-release.apk
-
-      # 📤 Upload artifact
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: fintech-apk
           path: build/app/outputs/flutter-apk/app-release.apk
