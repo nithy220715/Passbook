@@ -5,13 +5,13 @@ void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.dark(),
       home: Scaffold(
-        appBar: AppBar(title: const Text("Fintech App")),
-        body: const Center(child: Text("Flutter v2 embedding fixed 🚀")),
+        appBar: AppBar(title: const Text("Fintech App 🚀")),
+        body: const Center(child: Text("Build Ready App")),
       ),
     );
   }
